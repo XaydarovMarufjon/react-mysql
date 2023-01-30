@@ -4,4 +4,4 @@ ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password
 
 
 
-<!-- https://www.youtube.com/watch?v=fPuLnzSjPLE -->
+https://www.youtube.com/watch?v=fPuLnzSjPLE
