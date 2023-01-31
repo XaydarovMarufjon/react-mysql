@@ -9,7 +9,7 @@ app.use(express.json());
 const db = mysql.createConnection({
   host:"localhost",
   user:"root",
-  password:"password",
+  password:"current password",
   database:"tests"
 })
 
@@ -26,12 +26,13 @@ app.get('/books', (req , res )=>{
 })
 
 app.post('/books' , (req , res)=>{
-  const q = "INSERT INTO books (`title` , `desc`,`cover`) VALUES (?)"
+  const q = "INSERT INTO books (`title` , `desc`,`cover` , `price`) VALUES (?)"
  
   const values = [ 
     req.body.title ,
     req.body.desc ,
-    req.body.cover
+    req.body.cover,
+    req.body.price
   ]
  
   db.query(q,  [values], (err , data)=>{
@@ -39,6 +40,36 @@ app.post('/books' , (req , res)=>{
     return res.json("Book has benn created succesfully")
   })
 }) 
+
+app.delete("/books/:id" , (req , res)=>{
+  const bookId = req.params.id;
+
+  const q = "DELETE FROM books WHERE id = ?";
+
+  db.query(q,  [bookId], (err , data)=>{
+    if(err) return res.json(err);
+    return res.json("Book has benn deleted succesfully")
+  })
+})
+
+app.put("/books/:id" , (req , res)=>{
+  const bookId = req.params.id;
+
+  const q = "UPDATE books SET `title` = ?, `desc` = ?, `price` = ?, `cover` = ? WHERE id = ?";
+ 
+  const values = [ 
+    req.body.title ,
+    req.body.desc ,
+    req.body.cover,
+    req.body.price
+  ]
+ 
+
+  db.query(q,  [...values, bookId], (err , data)=>{
+    if(err) return res.json(err);
+    return res.json("Book has benn updated succesfully")
+  })
+})
 
 app.listen(3001 , ()=>{
   console.log("connected to back end");
